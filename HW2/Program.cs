@@ -21,7 +21,7 @@ namespace HW2
 
             // Read file contents and split into strings at spaces, tabs, and newlines
             var fileContents = System.IO.File.ReadAllText(fileName);
-            var fileStrings = fileContents.Split(new char[] {' ', '\t', '\r', '\n'},
+            var fileStrings = fileContents.Split(new[] {' ', '\t', '\r', '\n'},
                 StringSplitOptions.RemoveEmptyEntries);
 
             // Convert each string into an integer and store in `fileInts[]`
