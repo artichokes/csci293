@@ -34,6 +34,7 @@ namespace HW3
                 // Convert each string into an integer and store in `fileInts[]`
                 var fileInts = Array.ConvertAll(fileStrings, int.Parse);
 
+                // Display the maximum integer in fileInts
                 displayMaxInt(fileInts.Max());
             }
         }
@@ -41,24 +42,24 @@ namespace HW3
         private void pickFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
+            if (openFileDialog.ShowDialog() == true) // If a file is selected
             {
-                this.FileName = openFileDialog.FileName;
+                this.FileName = openFileDialog.FileName; // Set the text box to the file name selected
             }
         }
 
         private void displayError(string message)
         {
-            success.Visibility = Visibility.Hidden;
-            errorMessage.Text = message;
-            error.Visibility = Visibility.Visible;
+            success.Visibility = Visibility.Hidden; // Hide the success message box
+            errorMessage.Text = message; // Set the error text
+            error.Visibility = Visibility.Visible; // Show the error message box
         }
 
         private void displayMaxInt(int maxInt)
         {
-            error.Visibility = Visibility.Hidden;
-            maxInteger.Text = maxInt.ToString();
-            success.Visibility = Visibility.Visible;
+            error.Visibility = Visibility.Hidden; // Hide the error messsage box
+            maxInteger.Text = maxInt.ToString(); // Set the text to the maximum integer
+            success.Visibility = Visibility.Visible; // Show the success message box
         }
 
         private string _fileName;
@@ -70,6 +71,7 @@ namespace HW3
                 this._fileName = value;
                 if (null != this.PropertyChanged)
                 {
+                    // Send a property changed event to update the text box
                     PropertyChanged(this, new PropertyChangedEventArgs("FileName"));
                 }
             }
