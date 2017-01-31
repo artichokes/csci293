@@ -33,3 +33,5 @@ Resources
 [MSDN C# Programming Guide] (https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx)
 
 [Tutorials Point, C#] (https://www.tutorialspoint.com/csharp/)
+
+[Windows Presentation Foundation] (https://msdn.microsoft.com/en-us/library/ms754130(v=vs.110).aspx)
