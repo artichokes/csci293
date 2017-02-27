@@ -1,73 +1,91 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace LargestNumber
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private string _fileName;
+
         public MainWindow()
         {
             InitializeComponent();
             container.DataContext = this;
         }
 
+        public string FileName
+        {
+            get { return _fileName; }
+            set
+            {
+                _fileName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FileName"));
+            }
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
+
         private void readFile_Click(object sender, RoutedEventArgs e)
         {
             // Check if file exists
-            if (FileName == null || !System.IO.File.Exists(FileName))
+            if (FileName == null || !File.Exists(FileName))
             {
-                displayError(string.Format("Unable to open file: \"{0}\"", FileName));
+                DisplayError($"Unable to open file: \"{FileName}\"");
             }
             else
             {
                 // Read file contents and split into strings at spaces, tabs, and newlines
-                var fileContents = System.IO.File.ReadAllText(FileName);
-                var fileStrings = fileContents.Split(new[] { ' ', '\t', '\r', '\n' },
+                var fileContents = File.ReadAllText(FileName);
+                var fileStrings = fileContents.Split(new[] {' ', '\t', '\r', '\n'},
                     StringSplitOptions.RemoveEmptyEntries);
 
                 var fileInts = new List<int>();
 
                 // Convert each string into an integer and store in `fileInts[]`
-                foreach (string s in fileStrings)
-                {
+                foreach (var s in fileStrings)
                     try
                     {
                         fileInts.Add(int.Parse(s));
                     }
-                    catch (Exception) { } // Ignore non integers
-                }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
 
                 // Display the maximum integer in fileInts
-                displayMaxInt(fileInts);
+                DisplayMaxInt(fileInts);
             }
         }
 
         private void pickFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true) // If a file is selected
-            {
-                this.FileName = openFileDialog.FileName; // Set the text box to the file name selected
-            }
+                FileName = openFileDialog.FileName; // Set the text box to the file name selected
         }
 
-        private void displayError(string message)
+        private void DisplayError(string message)
         {
             success.Visibility = Visibility.Hidden;
             MessageBox.Show(message, null, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private void displayMaxInt(IEnumerable<int> fileInts)
+        private void DisplayMaxInt(List<int> fileInts)
         {
             // If no integers found return an info popup
-            if (fileInts.Count() == 0)
+            if (!fileInts.Any())
             {
                 success.Visibility = Visibility.Hidden;
                 MessageBox.Show("No integers found!", null, MessageBoxButton.OK, MessageBoxImage.Information);
@@ -77,24 +95,5 @@ namespace LargestNumber
             maxInteger.Text = fileInts.Max().ToString(); // Set the text to the maximum integer
             success.Visibility = Visibility.Visible; // Show the success message box
         }
-
-        private string _fileName;
-        public string FileName
-        {
-            get { return this._fileName; }
-            set
-            {
-                this._fileName = value;
-                if (null != this.PropertyChanged)
-                {
-                    // Send a property changed event to update the text box
-                    PropertyChanged(this, new PropertyChangedEventArgs("FileName"));
-                }
-            }
-        }
-
-        #region INotifyPropertyChanged Members
-        public event PropertyChangedEventHandler PropertyChanged;
-        #endregion
     }
 }

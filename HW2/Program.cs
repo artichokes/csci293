@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace HW2
 {
@@ -11,7 +12,7 @@ namespace HW2
             var fileName = Console.ReadLine();
 
             // Check if file exists
-            if (fileName == null || !System.IO.File.Exists(fileName))
+            if (fileName == null || !File.Exists(fileName))
             {
                 Console.WriteLine("Unable to open file: {0}", fileName);
                 Console.Write("Press Return to exit...");
@@ -20,7 +21,7 @@ namespace HW2
             }
 
             // Read file contents and split into strings at spaces, tabs, and newlines
-            var fileContents = System.IO.File.ReadAllText(fileName);
+            var fileContents = File.ReadAllText(fileName);
             var fileStrings = fileContents.Split(new[] {' ', '\t', '\r', '\n'},
                 StringSplitOptions.RemoveEmptyEntries);
 
